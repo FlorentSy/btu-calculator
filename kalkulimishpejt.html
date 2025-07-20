@@ -2,15 +2,18 @@
 <html lang="sq">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make responsive -->
   <title>Kalkulim i Shpejtë BTU</title>
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to right, #667eea, #764ba2);
-      padding: 40px;
+      padding: 40px 20px;
       color: #333;
+      margin: 0;
     }
+
     .container {
       max-width: 650px;
       margin: 0 auto;
@@ -19,21 +22,25 @@
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+
     h2 {
-    text-align: center;
-    background: linear-gradient(90deg, #4f46e5, #ec4899);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 30px;
-    font-size: 2rem;
-    display: inline-block;
+      text-align: center;
+      background: linear-gradient(90deg, #4f46e5, #ec4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      display: inline-block;
+      width: 100%;
     }
+
     label {
       display: block;
       margin-bottom: 6px;
       font-weight: 600;
     }
+
     input, select {
       width: 100%;
       padding: 10px;
@@ -42,36 +49,15 @@
       border: 1px solid #d1d5db;
       font-size: 1rem;
       transition: all 0.3s ease;
+      box-sizing: border-box;
     }
+
     input:focus, select:focus {
       outline: none;
       border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
-    button {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(to right, #667eea, #764ba2);
-      border: none;
-      color: white;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    #result {
-      margin-top: 25px;
-      background: #f3f4f6;
-      padding: 18px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      color: #374151;
-      font-size: 1.1rem;
-    }
-    
     .calculate-btn {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
@@ -85,8 +71,11 @@
       box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       margin: 30px auto;
+      width: 100%;
+      max-width: 400px;
     }
 
     .calculate-btn:hover {
@@ -97,6 +86,40 @@
 
     .calculate-btn:active {
       transform: translateY(0);
+    }
+
+    #result {
+      margin-top: 25px;
+      background: #f3f4f6;
+      padding: 18px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      color: #374151;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        padding: 25px 15px;
+      }
+
+      input, select {
+        font-size: 1rem;
+      }
+
+      .calculate-btn {
+        font-size: 1rem;
+        padding: 12px 20px;
+      }
+
+      #result {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
@@ -115,7 +138,7 @@
     <input type="number" id="height" placeholder="p.sh. 2.7" step="0.1" min="2" max="5" value="2.7">
 
     <label for="windows">Numri i dritareve</label>
-    <input type="number" id="windows" min="0" max="20"  value="1">
+    <input type="number" id="windows" min="0" max="20" value="1">
 
     <label for="people">Numri i personave</label>
     <select id="people">
@@ -132,7 +155,9 @@
       <option value="shume">Shumë</option>
     </select>
 
-    <button lass="calculate-btn" onclick="calculateBTU()">Llogarit BTU të nevojshme</button>
+    <button class="calculate-btn" onclick="calculateBTU()">
+      <i class="fas fa-calculator"></i> Llogarit BTU të nevojshme
+    </button>
 
     <div id="result"></div>
   </div>
@@ -171,7 +196,6 @@
         `🔢 BTU të përllogaritura: <strong>${roundedBTU.toLocaleString()} BTU</strong><br><br>
          ✅ Njësia e rekomanduar: <strong>${recommendedUnit} BTU</strong>`;
     }
-
   </script>
 
 </body>
