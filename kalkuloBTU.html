@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulimi standard i BTU </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      color: white;
+      padding: 20px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .main-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .settings-section {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.9rem;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .room-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .room-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .room-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .room-header h3 {
+      font-size: 1.3rem;
+      color: #1f2937;
+      margin-left: 10px;
+    }
+
+    .room-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .dimensions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .window-section {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .window-dimensions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .calculate-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 30px auto;
+    }
+
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .calculate-btn:active {
+      transform: translateY(0);
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-top: 30px;
+      box-shadow: 0 15px 35px rgba(16, 185, 129, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+
+    .result-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .result-details {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      backdrop-filter: blur(5px);
+    }
+
+    .room-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .room-breakdown-item {
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .efficiency-tips {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: #1f2937;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+    }
+
+    .efficiency-tips h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      color: #3b438a;
+    }
+
+    .tips-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tips-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.9rem;
+    }
+
+    .tips-list li:last-child {
+      border-bottom: none;
+    }
+
+    .tips-list li::before {
+      content: "💡";
+      margin-right: 8px;
+    }
+
+    .climate-type {
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      color: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .climate-type h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .climate-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .climate-option {
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .climate-option.active {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .climate-option:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .main-card {
+        padding: 20px;
+      }
+
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dimensions-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tooltip {
+      position: relative;
+      cursor: help;
+    }
+
+    .tooltip:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-snowflake"></i> KalkuloBTU</h1>
+      <p>Kalkulimi standard i BTU-ve për zgjedhjen e klimës së duhur</p>
+    </div>
+    <div class="main-card">
+      <div class="settings-section">
+        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-cogs"></i> Konfigurimi i përgjithshëm
+        </h3>
+        <div class="settings-grid">
+          <div class="input-group">
+            <label for="roomCount">Numri i hapësirave</label>
+            <input type="number" id="roomCount" value="1" min="1" max="10" onchange="renderRoomSections()">
+          </div>
+          <div class="input-group">
+            <label for="ceilingHeight">Lartësia standarde e tavanit (m)</label>
+            <input type="number" id="ceilingHeight" value="2.7" min="2" max="10" step="0.1">
+          </div>
+          <div class="input-group">
+            <label for="floorType" class="tooltip" data-tooltip="Lloji i dyshemesë ndikon në izolimin termik">Lloji i dyshemesë</label>
+            <select id="floorType">
+              <option value="concrete">Beton</option>
+              <option value="wood">Dru</option>
+              <option value="tile">Pllaka</option>
+              <option value="carpet">Qilim</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="climate-type">
+        <h4><i class="fas fa-thermometer-half"></i> Lloji i klimës në zonën tuaj</h4>
+        <div class="climate-options">
+          <div class="climate-option active" onclick="selectClimate('moderate')" data-climate="moderate">
+            <i class="fas fa-leaf"></i><br>E Ndryshueshme
+          </div>
+          <div class="climate-option" onclick="selectClimate('hot')" data-climate="hot">
+            <i class="fas fa-sun"></i><br>E nxehtë
+          </div>
+          <div class="climate-option" onclick="selectClimate('humid')" data-climate="humid">
+            <i class="fas fa-tint"></i><br>E lagësht
+          </div>
+          <div class="climate-option" onclick="selectClimate('dry')" data-climate="dry">
+            <i class="fas fa-wind"></i><br>E thatë
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+
+      <div id="roomSections"></div>
+
+      <button class="calculate-btn" onclick="calculateTotalBTU()">
+        <i class="fas fa-calculator"></i>
+        Llogarit BTU-të e nevojshme
+      </button>
+
+      <div id="result" class="result-card"></div>
+
+      <div class="efficiency-tips">
+        <h4><i class="fas fa-lightbulb"></i> Këshilla për efikasitet</h4>
+        <ul class="tips-list">
+          <li>Përdorni termostat programmues për të kursyer energji</li>
+          <li>Mbyllni dritaret dhe perdet gjatë ditës së nxehtë</li>
+          <li>Sigurohuni që klima është e shërbyer rregullisht</li>
+          <li>Izoloni mirë hapësirat për performancë optimale</li>
+          <li>Konsideroni përdorimin e ventilatorëve të tavanit</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedClimate = 'moderate';
+    let roomData = [];
+
+    function selectClimate(climate) {
+      selectedClimate = climate;
+      document.querySelectorAll('.climate-option').forEach(el => el.classList.remove('active'));
+      document.querySelector(`[data-climate="${climate}"]`).classList.add('active');
+    }
+
+    function updateProgress() {
+      const totalRooms = parseInt(document.getElementById('roomCount').value);
+      let completedRooms = 0;
+      
+      for (let i = 1; i <= totalRooms; i++) {
+        const length = document.getElementById(`length${i}`)?.value;
+        const width = document.getElementById(`width${i}`)?.value;
+        const height = document.getElementById(`height${i}`)?.value;
+        if (length && width && height) completedRooms++;
+      }
+      
+      const progress = (completedRooms / totalRooms) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+    }
+
+    function getRoomIcon(roomType) {
+      const icons = {
+        bedroom: 'fas fa-bed',
+        livingroom: 'fas fa-couch',
+        bathroom: 'fas fa-bath',
+        hallway: 'fas fa-door-open',
+        hall: 'fas fa-building',
+        kitchen: 'fas fa-utensils',
+        office: 'fas fa-briefcase'
+      };
+      return icons[roomType] || 'fas fa-home';
+    }
+
+    function renderRoomSections() {
+      const roomCount = parseInt(document.getElementById('roomCount').value);
+      const container = document.getElementById('roomSections');
+      container.innerHTML = '';
+      
+      for (let i = 1; i <= roomCount; i++) {
+        const section = document.createElement('div');
+        section.className = 'room-card';
+        section.innerHTML = `
+          <div class="room-header">
+            <div class="room-icon">
+              <i class="${getRoomIcon('bedroom')}" id="roomIcon${i}"></i>
+            </div>
+            <h3>Hapësira ${i}</h3>
+          </div>
+
+          <div class="input-group">
+            <label for="roomType${i}">Lloji i hapësirës</label>
+            <select id="roomType${i}" onchange="updateRoomIcon(${i})" class="w-full border rounded p-2">
+              <option value="bedroom">Dhomë gjumi</option>
+              <option value="livingroom">Dhomë qendrimi</option>
+              <option value="bathroom">Banjo</option>
+              <option value="hallway">Koridor</option>
+              <option value="hall">Sallë e madhe</option>
+              <option value="kitchen">Kuzhinë</option>
+              <option value="office">Zyrë</option>
+            </select>
+          </div>
+
+          <div class="dimensions-grid">
+            <div class="input-group">
+              <label for="length${i}">Gjatësia (m)</label>
+              <input type="number" id="length${i}" step="0.1" min="0.5" max="20" oninput="updateProgress()">
+            </div>
+            <div class="input-group">
+              <label for="width${i}">Gjerësia (m)</label>
+              <input type="number" id="width${i}" step="0.1" min="0.5" max="20" oninput="updateProgress()">
+            </div>
+            <div class="input-group">
+              <label for="height${i}">Lartësia (m)</label>
+              <input type="number" id="height${i}" step="0.1" min="2" max="10" oninput="updateProgress()">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="windows${i}">Numri i dritareve</label>
+            <input type="number" id="windows${i}" min="0" max="20" value="1" oninput="renderWindowInputs(${i})">
+          </div>
+
+          <div class="input-group">
+            <label for="windowType${i}" class="tooltip" data-tooltip="Materiali ndikon në humbjen e nxehtësisë">Materiali i dritareve</label>
+            <select id="windowType${i}">
+              <option value="wood">Dru</option>
+              <option value="upvc">Plastikë (UPVC)</option>
+              <option value="aluminum">Alumin</option>
+            </select>
+          </div>
+
+          <div class="window-section">
+            <h4 style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-window-restore"></i> Dimensionet e dritareve
+            </h4>
+            <div id="windowDimensions${i}" class="window-dimensions"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="insulation${i}" class="tooltip" data-tooltip="Cilësia e izolimit ndikon shumë në nevojën për BTU">Cilësia e izolimit</label>
+            <select id="insulation${i}">
+              <option value="poor">Dobët</option>
+              <option value="average" selected>Mesatare</option>
+              <option value="good">E mirë</option>
+              <option value="excellent">E shkëlqyer</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="people${i}">Numri i personave</label>
+            <input type="number" id="people${i}" min="0" max="50" value="1">
+          </div>
+
+          <div class="input-group">
+            <label for="sunExposure${i}" class="tooltip" data-tooltip="Ekspozimi ndaj diellit rrit nevojën për ftohje">Ekspozimi ndaj diellit</label>
+            <select id="sunExposure${i}">
+              <option value="low">I ulët</option>
+              <option value="medium" selected>Mesatar</option>
+              <option value="high">I lartë</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="appliances${i}">Pajisje që prodhojnë nxehtësi</label>
+            <select id="appliances${i}">
+              <option value="none">Asnjë</option>
+              <option value="few" selected>Pak (TV, laptop)</option>
+              <option value="many">Shumë (kompjuter, printer)</option>
+              <option value="kitchen">Kuzhinë (furrë, mikrovalë)</option>
+            </select>
+          </div>
+        `;
+        container.appendChild(section);
+        renderWindowInputs(i);
+      }
+      updateProgress();
+    }
+
+    function updateRoomIcon(index) {
+      const roomType = document.getElementById(`roomType${index}`).value;
+      const icon = document.getElementById(`roomIcon${index}`);
+      icon.className = getRoomIcon(roomType);
+    }
+
+    function renderWindowInputs(index) {
+      const count = parseInt(document.getElementById(`windows${index}`).value) || 0;
+      const container = document.getElementById(`windowDimensions${index}`);
+      container.innerHTML = '';
+      
+      for (let i = 1; i <= count; i++) {
+        const div = document.createElement('div');
+        div.className = 'input-group';
+        div.innerHTML = `
+          <label>Dritarja ${i}</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="number" id="windowHeight${index}_${i}" placeholder="Lartësia (m)" step="0.1" min="0.1" max="5" style="flex: 1;">
+            <input type="number" id="windowWidth${index}_${i}" placeholder="Gjerësia (m)" step="0.1" min="0.1" max="5" style="flex: 1;">
+          </div>
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    function calculateTotalBTU() {
+      const roomCount = parseInt(document.getElementById('roomCount').value);
+      const ceilingHeight = parseFloat(document.getElementById('ceilingHeight').value);
+      const floorType = document.getElementById('floorType').value;
+      
+      let totalBTU = 0;
+      let roomBreakdown = [];
+      const climateMultipliers = {
+        moderate: 1.0,
+        hot: 1.2,
+        humid: 1.15,
+        dry: 0.95
+      };
+
+      for (let i = 1; i <= roomCount; i++) {
+        const length = parseFloat(document.getElementById(`length${i}`).value);
+        const width = parseFloat(document.getElementById(`width${i}`).value);
+        const height = parseFloat(document.getElementById(`height${i}`).value) || ceilingHeight;
+        const roomType = document.getElementById(`roomType${i}`).value;
+        const insulation = document.getElementById(`insulation${i}`).value;
+        const windowType = document.getElementById(`windowType${i}`).value;
+        const people = parseInt(document.getElementById(`people${i}`).value) || 0;
+        const windows = parseInt(document.getElementById(`windows${i}`).value) || 0;
+        const sunExposure = document.getElementById(`sunExposure${i}`).value;
+        const appliances = document.getElementById(`appliances${i}`).value;
+
+        if (!length || !width || !height) {
+          alert(`Ju lutem plotësoni dimensionet për hapësirën ${i}.`);
+          return;
+        }
+
+        const volume = length * width * height;
+        const area = length * width;
+
+        // Base BTU calculation
+        let btuPerM3 = 140;
+        
+        // Insulation factor
+        const insulationFactors = {
+          poor: 1.4,
+          average: 1.0,
+          good: 0.8,
+          excellent: 0.6
+        };
+        
+        btuPerM3 *= insulationFactors[insulation];
+
+        // Room type adjustments
+        const roomTypeFactors = {
+          bedroom: 0.9,
+          livingroom: 1.0,
+          bathroom: 1.1,
+          hallway: 0.8,
+          hall: 1.0,
+          kitchen: 1.3,
+          office: 1.1
+        };
+        
+        btuPerM3 *= roomTypeFactors[roomType];
+
+        let roomBTU = volume * btuPerM3;
+
+        // Window calculations
+        let windowArea = 0;
+        for (let j = 1; j <= windows; j++) {
+          const h = parseFloat(document.getElementById(`windowHeight${i}_${j}`)?.value || 0);
+          const w = parseFloat(document.getElementById(`windowWidth${i}_${j}`)?.value || 0);
+          windowArea += h * w;
+        }
+
+        const windowFactors = {
+          wood: 180,
+          upvc: 110,
+          aluminum: 150,
+        };
+        
+        roomBTU += windowArea * windowFactors[windowType];
+
+        // Sun exposure
+        const sunFactors = {
+          low: 0.9,
+          medium: 1.0,
+          high: 1.2
+        };
+        roomBTU *= sunFactors[sunExposure];
+
+        // People heat load
+        roomBTU += people * 600;
+
+        // Appliances
+        const applianceFactors = {
+          none: 0,
+          few: 400,
+          many: 800,
+          kitchen: 1200
+        };
+        roomBTU += applianceFactors[appliances];
+
+        // Floor type adjustment
+        const floorFactors = {
+          concrete: 1.1,
+          wood: 0.95,
+          tile: 1.05,
+          carpet: 0.9
+        };
+        roomBTU *= floorFactors[floorType];
+
+        // Climate adjustment
+        roomBTU *= climateMultipliers[selectedClimate];
+
+        totalBTU += roomBTU;
+        roomBreakdown.push({
+          room: i,
+          btu: Math.round(roomBTU),
+          area: Math.round(area * 10) / 10
+        });
+      }
+
+      displayResults(totalBTU, roomBreakdown);
+    }
+
+    function displayResults(totalBTU, roomBreakdown) {
+      const resultDiv = document.getElementById('result');
+      const options = [ 12000, 18000, 24000];
+      
+      let resultHTML = `
+        <h3><i class="fas fa-thermometer-half"></i> Rezultatet e kalkulimit</h3>
+        <div class="result-details">
+          <p style="font-size: 1.2rem; margin-bottom: 15px;">
+            <strong>Nevoja totale: ${Math.round(totalBTU).toLocaleString()} BTU</strong>
+          </p>
+          
+          <div class="room-breakdown">
+            ${roomBreakdown.map(room => `
+              <div class="room-breakdown-item">
+                <strong>Hapësira ${room.room}</strong><br>
+                ${room.btu.toLocaleString()} BTU<br>
+                <small>(${room.area}m²)</small>
+              </div>
+            `).join('')}
+          </div>
+      `;
+
+      // AC recommendations
+      if (totalBTU <= 24000) {
+        const closest = options.reduce((prev, curr) => 
+          Math.abs(curr - totalBTU) < Math.abs(prev - totalBTU) ? curr : prev
+        );
+        resultHTML += `
+          <p style="margin-top: 15px; font-size: 1.1rem;">
+            <strong>💡 Rekomandim: Një AC prej ${closest.toLocaleString()} BTU</strong>
+          </p>
+        `;
+      } else {
+        const combo = [];
+        let remaining = totalBTU;
+        for (let i = options.length - 1; i >= 0; i--) {
+          while (remaining >= options[i]) {
+            combo.push(options[i]);
+            remaining -= options[i];
+          }
+        }
+        resultHTML += `
+          <p style="margin-top: 15px; font-size: 1.1rem;">
+            <strong>💡 Rekomandohen njësi të shumta:</strong><br>
+            ${combo.map(btu => `${btu.toLocaleString()} BTU`).join(' + ')}
+          </p>
+        `;
+      }
+
+      // Energy efficiency estimation
+        const dailyHours = 8;
+        const days = 180; // 6 muaj × 30 ditë
+        const yearlyKWH = Math.round(totalBTU * dailyHours * days / 3412); // Realistic estimate
+        const yearlyCost = Math.round(yearlyKWH * 0.10); // 10 cents per kWh
+
+        resultHTML += `
+        <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;"> 
+            <h4 style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-chart-line"></i> Vlerësim i kostos vjetore
+            </h4>
+            <p><strong>Konsum i vlerësuar:</strong> ${yearlyKWH.toLocaleString()} kWh/vit</p>
+            <p><strong>Kosto e vlerësuar:</strong> €${yearlyCost}/vit</p>
+            <small style="opacity: 0.8;">*Bazuar në 8 orë përdorim ditore për 6 muaj. 1 kWh ≈ 3412 BTU</small>
+        </div>
+        `;
+
+      resultHTML += `</div>`;
+      
+      resultDiv.innerHTML = resultHTML;
+      resultDiv.classList.add('show');
+      
+      // Smooth scroll to results
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Save and load functionality
+    function saveConfiguration() {
+      const config = {
+        roomCount: document.getElementById('roomCount').value,
+        ceilingHeight: document.getElementById('ceilingHeight').value,
+        floorType: document.getElementById('floorType').value,
+        climate: selectedClimate,
+        rooms: []
+      };
+      
+      const roomCount = parseInt(document.getElementById('roomCount').value);
+      for (let i = 1; i <= roomCount; i++) {
+        const roomConfig = {
+          roomType: document.getElementById(`roomType${i}`)?.value,
+          length: document.getElementById(`length${i}`)?.value,
+          width: document.getElementById(`width${i}`)?.value,
+          height: document.getElementById(`height${i}`)?.value,
+          windows: document.getElementById(`windows${i}`)?.value,
+          windowType: document.getElementById(`windowType${i}`)?.value,
+          insulation: document.getElementById(`insulation${i}`)?.value,
+          people: document.getElementById(`people${i}`)?.value,
+          sunExposure: document.getElementById(`sunExposure${i}`)?.value,
+          appliances: document.getElementById(`appliances${i}`)?.value
+        };
+        config.rooms.push(roomConfig);
+      }
+      
+      return JSON.stringify(config);
+    }
+
+    function loadConfiguration(configString) {
+      try {
+        const config = JSON.parse(configString);
+        
+        document.getElementById('roomCount').value = config.roomCount;
+        document.getElementById('ceilingHeight').value = config.ceilingHeight;
+        document.getElementById('floorType').value = config.floorType;
+        selectClimate(config.climate);
+        
+        renderRoomSections();
+        
+        setTimeout(() => {
+          config.rooms.forEach((room, index) => {
+            const i = index + 1;
+            if (document.getElementById(`roomType${i}`)) {
+              document.getElementById(`roomType${i}`).value = room.roomType;
+              document.getElementById(`length${i}`).value = room.length;
+              document.getElementById(`width${i}`).value = room.width;
+              document.getElementById(`height${i}`).value = room.height;
+              document.getElementById(`windows${i}`).value = room.windows;
+              document.getElementById(`windowType${i}`).value = room.windowType;
+              document.getElementById(`insulation${i}`).value = room.insulation;
+              document.getElementById(`people${i}`).value = room.people;
+              document.getElementById(`sunExposure${i}`).value = room.sunExposure;
+              document.getElementById(`appliances${i}`).value = room.appliances;
+              updateRoomIcon(i);
+              renderWindowInputs(i);
+            }
+          });
+        }, 100);
+        
+      } catch (e) {
+        alert('Gabim në ngarkimin e konfigurimit');
+      }
+    }
+
+  
+    // Quick preset configurations
+    function addQuickPresets() {
+      const presetsHTML = `
+        <div style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);">
+          <h4 style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+            <i class="fas fa-magic"></i> Lloji i vendbanimit
+          </h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+            <button onclick="loadPreset('apartment')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+              <i class="fas fa-building"></i><br>Apartament
+            </button>
+            <button onclick="loadPreset('house')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+              <i class="fas fa-home"></i><br>Shtëpi
+            </button>
+            <button onclick="loadPreset('office')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+              <i class="fas fa-briefcase"></i><br>Zyrë
+            </button>
+            <button onclick="loadPreset('shop')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+              <i class="fas fa-store"></i><br>Dyqan
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.querySelector('.climate-type').insertAdjacentHTML('afterend', presetsHTML);
+    }
+
+    function loadPreset(presetType) {
+      const presets = {
+        apartment: {
+          roomCount: 3,
+          rooms: [
+            { roomType: 'livingroom', length: 5, width: 4, height: 2.8, windows: 2, insulation: 'average', people: 2, sunExposure: 'medium', appliances: 'few' },
+            { roomType: 'bedroom', length: 4, width: 3.5, height: 2.8, windows: 1, insulation: 'average', people: 2, sunExposure: 'low', appliances: 'few' },
+            { roomType: 'kitchen', length: 3, width: 2.5, height: 2.8, windows: 1, insulation: 'average', people: 1, sunExposure: 'high', appliances: 'kitchen' }
+          ]
+        },
+        house: {
+          roomCount: 4,
+          rooms: [
+            { roomType: 'livingroom', length: 6, width: 5, height: 3, windows: 3, insulation: 'good', people: 3, sunExposure: 'medium', appliances: 'few' },
+            { roomType: 'bedroom', length: 4, width: 4, height: 3, windows: 2, insulation: 'good', people: 2, sunExposure: 'low', appliances: 'few' },
+            { roomType: 'bedroom', length: 3.5, width: 3, height: 3, windows: 1, insulation: 'good', people: 1, sunExposure: 'low', appliances: 'few' },
+            { roomType: 'kitchen', length: 4, width: 3, height: 3, windows: 1, insulation: 'good', people: 1, sunExposure: 'high', appliances: 'kitchen' }
+          ]
+        },
+        office: {
+          roomCount: 2,
+          rooms: [
+            { roomType: 'office', length: 8, width: 6, height: 3, windows: 4, insulation: 'good', people: 8, sunExposure: 'high', appliances: 'many' },
+            { roomType: 'hallway', length: 10, width: 2, height: 3, windows: 0, insulation: 'good', people: 2, sunExposure: 'low', appliances: 'none' }
+          ]
+        },
+        shop: {
+          roomCount: 1,
+          rooms: [
+            { roomType: 'hall', length: 12, width: 8, height: 4, windows: 6, insulation: 'average', people: 15, sunExposure: 'high', appliances: 'many' }
+          ]
+        }
+      };
+      
+      const preset = presets[presetType];
+      document.getElementById('roomCount').value = preset.roomCount;
+      renderRoomSections();
+      
+      setTimeout(() => {
+        preset.rooms.forEach((room, index) => {
+          const i = index + 1;
+          if (document.getElementById(`roomType${i}`)) {
+            document.getElementById(`roomType${i}`).value = room.roomType;
+            document.getElementById(`length${i}`).value = room.length;
+            document.getElementById(`width${i}`).value = room.width;
+            document.getElementById(`height${i}`).value = room.height;
+            document.getElementById(`windows${i}`).value = room.windows;
+            document.getElementById(`insulation${i}`).value = room.insulation;
+            document.getElementById(`people${i}`).value = room.people;
+            document.getElementById(`sunExposure${i}`).value = room.sunExposure;
+            document.getElementById(`appliances${i}`).value = room.appliances;
+            updateRoomIcon(i);
+            renderWindowInputs(i);
+          }
+        });
+        updateProgress();
+      }, 100);
+    }
+
+    // Initialize the application
+    window.onload = function() {
+      renderRoomSections();
+      addQuickPresets();
+      addExportImportButtons();
+    };
+
+    // Add smooth hover effects for interactive elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const style = document.createElement('style');
+      style.textContent = `
+        .climate-option:hover {
+          transform: scale(1.05);
+        }
+        
+        .room-card:hover .room-icon {
+          transform: scale(1.1);
+        }
+        
+        .calculate-btn:hover {
+          animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+          transform: scale(1.02);
+        }
+      `;
+      document.head.appendChild(style);
+    });
+  </script>
+</body>
+</html>

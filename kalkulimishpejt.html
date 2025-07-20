@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalkulim i Shpejtë BTU</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      padding: 40px;
+      color: #333;
+    }
+    .container {
+      max-width: 650px;
+      margin: 0 auto;
+      background: white;
+      padding: 35px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+    text-align: center;
+    background: linear-gradient(90deg, #4f46e5, #ec4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    display: inline-block;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #667eea, #764ba2);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #result {
+      margin-top: 25px;
+      background: #f3f4f6;
+      padding: 18px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      color: #374151;
+      font-size: 1.1rem;
+    }
+    
+    .calculate-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 30px auto;
+    }
+
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+      animation: pulse 1s infinite;
+    }
+
+    .calculate-btn:active {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2><i class="fas fa-bolt"></i> Kalkulim i Shpejtë i BTU</h2>
+
+    <label for="length">Gjatësia e dhomës (m)</label>
+    <input type="number" id="length" placeholder="p.sh. 5" step="0.1" min="1" max="20">
+
+    <label for="width">Gjerësia e dhomës (m)</label>
+    <input type="number" id="width" placeholder="p.sh. 4" step="0.1" min="1" max="20">
+
+    <label for="height">Lartësia e dhomës (m)</label>
+    <input type="number" id="height" placeholder="p.sh. 2.7" step="0.1" min="2" max="5" value="2.7">
+
+    <label for="windows">Numri i dritareve</label>
+    <input type="number" id="windows" min="0" max="20"  value="1">
+
+    <label for="people">Numri i personave</label>
+    <select id="people">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4+</option>
+    </select>
+
+    <label for="sun">Ekspozimi ndaj diellit</label>
+    <select id="sun">
+      <option value="pak">Pak</option>
+      <option value="mesatar" selected>Mesatar</option>
+      <option value="shume">Shumë</option>
+    </select>
+
+    <button lass="calculate-btn" onclick="calculateBTU()">Llogarit BTU të nevojshme</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculateBTU() {
+      const length = parseFloat(document.getElementById("length").value);
+      const width = parseFloat(document.getElementById("width").value);
+      const height = parseFloat(document.getElementById("height").value);
+      const windows = parseInt(document.getElementById("windows").value);
+      const people = parseInt(document.getElementById("people").value);
+      const sun = document.getElementById("sun").value;
+
+      if (isNaN(length) || isNaN(width) || isNaN(height) || isNaN(windows)) {
+        document.getElementById("result").innerText = "Ju lutem plotësoni të gjitha fushat siç duhet.";
+        return;
+      }
+
+      let volume = length * width * height;
+      let baseBTU = volume * 150;
+
+      baseBTU += (people - 1) * 500;
+
+      let windowArea = windows * 0.8 * 1.4;
+      baseBTU += windowArea * 200;
+
+      if (sun === "shume") baseBTU *= 1.2;
+      else if (sun === "pak") baseBTU *= 0.9;
+
+      let roundedBTU = Math.round(baseBTU);
+      let recommendedUnit = 24000;
+      if (roundedBTU <= 12000) recommendedUnit = 12000;
+      else if (roundedBTU <= 18000) recommendedUnit = 18000;
+
+      document.getElementById("result").innerHTML =
+        `🔢 BTU të përllogaritura: <strong>${roundedBTU.toLocaleString()} BTU</strong><br><br>
+         ✅ Njësia e rekomanduar: <strong>${recommendedUnit} BTU</strong>`;
+    }
+
+  </script>
+
+</body>
+</html>
