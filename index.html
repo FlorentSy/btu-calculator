@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <title>Zgjedh Kalkulimin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .main-card {
+        max-width: 850px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+        padding: 35px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        margin: 0 auto; /* centers horizontally */
+        margin-top: 50px;
+        }
+
+
+    .main-card h2{
+      text-align: center;
+    background: #01216ee9;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    }
+    .main-card p {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .calculator-option {
+      background-color: #fff;
+      color: #333;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .calculator-option:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px #50217fa2;
+    }
+
+    .option-icon {
+      font-size: 2.5rem;
+      color: #4f46e5;
+      margin-bottom: 15px;
+    }
+
+    .option-features div {
+      font-size: 0.9rem;
+      margin: 5px 0;
+    }
+
+    .option-time {
+      color: #666;
+      margin-top: 15px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-card">
+    <h2>Zgjedh llojin e kalkulimit</h2>
+    <p>Cili opsion të përshtatet më mirë?</p>
+
+    <div class="grid">
+      <a href="kalkulimishpejt.html">
+        <div class="calculator-option">
+          <div class="option-icon"><i class="fas fa-bolt"></i></div>
+          <h3>Kalkulim i Shpejtë</h3>
+          <p>Ideal për një hapësirë të vetme.</p>
+          <div class="option-features">
+            <div><i class="fas fa-check"></i> Vetëm dimensionet bazë</div>
+            <div><i class="fas fa-check"></i> Një hapësirë</div>
+            <div><i class="fas fa-check"></i> Rezultat i menjëhershëm</div>
+          </div>
+          <div class="option-time"><i class="fas fa-clock"></i> ~1 minutë</div>
+        </div>
+      </a>
+
+      <a href="kalkuloBTU.html">
+        <div class="calculator-option">
+          <div class="option-icon"><i class="fas fa-cogs"></i></div>
+          <h3>Kalkulim i Detajuar</h3>
+          <p>Analizë për shumë hapësira me parametra të plotë.</p>
+          <div class="option-features">
+            <div><i class="fas fa-check"></i> Shumë hapësira</div>
+            <div><i class="fas fa-check"></i> Parametra të avancuar</div>
+            <div><i class="fas fa-check"></i> Rekomandim i saktë</div>
+          </div>
+          <div class="option-time"><i class="fas fa-clock"></i> ~5-10 minuta</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
