@@ -887,12 +887,32 @@
         `;
       }
 
-       // Energy efficiency estimation
-        const dailyHours = 6;
-        const days = 180; // 6 muaj × 30 ditë
-        const yearlyKWH = Math.round(totalBTU * dailyHours * days / 3412); // Realistic estimate
-        const yearlyCost = Math.round(yearlyKWH * 0.085); // 8.5 cents per kWh
+      
+        // Energy efficiency estimation - based on recommended AC unit, not calculated BTU
+          const dailyHours = 6;
+          const days = 180; // 6 muaj × 30 ditë
+          const efficiency_factor = 0.65; // 65% average load
 
+          // Determine recommended AC capacity
+          let recommendedCapacity;
+          if (totalBTU <= 15000) recommendedCapacity = 12000;
+          else if (totalBTU <= 21000) recommendedCapacity = 18000;
+          else if (totalBTU <= 24000) recommendedCapacity = 24000;
+          else {
+            // For multiple units, calculate total recommended capacity
+            let remaining = totalBTU;
+            recommendedCapacity = 0;
+            while (remaining >= 24000) {
+              recommendedCapacity += 24000;
+              remaining -= 24000;
+            }
+            if (remaining > 18000) recommendedCapacity += 24000;
+            else if (remaining > 12000) recommendedCapacity += 18000;
+            else if (remaining > 0) recommendedCapacity += 12000;
+          }
+
+          const yearlyKWH = Math.round(recommendedCapacity * dailyHours * days * efficiency_factor / 3412);
+          const yearlyCost = Math.round(yearlyKWH * 0.085);
         resultHTML += `
         <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;"> 
             <h4 style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
