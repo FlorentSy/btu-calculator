@@ -787,10 +787,11 @@
       }
 
       // Energy efficiency estimation
-        const dailyHours = 8;
+       // Energy efficiency estimation
+        const dailyHours = 6;
         const days = 180; // 6 muaj × 30 ditë
         const yearlyKWH = Math.round(totalBTU * dailyHours * days / 3412); // Realistic estimate
-        const yearlyCost = Math.round(yearlyKWH * 0.10); // 10 cents per kWh
+        const yearlyCost = Math.round(yearlyKWH * 0.085); // 8.5 cents per kWh
 
         resultHTML += `
         <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;"> 
@@ -799,7 +800,7 @@
             </h4>
             <p><strong>Konsum i vlerësuar:</strong> ${yearlyKWH.toLocaleString()} kWh/vit</p>
             <p><strong>Kosto e vlerësuar:</strong> €${yearlyCost}/vit</p>
-            <small style="opacity: 0.8;">*Bazuar në 8 orë përdorim ditore për 6 muaj. 1 kWh ≈ 3412 BTU</small>
+            <small style="opacity: 0.8;">*Bazuar në 6 orë përdorim ditore për 6 muaj. 1 kWh ≈ 3412 BTU</small>
         </div>
         `;
 
