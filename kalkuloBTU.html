@@ -186,6 +186,35 @@
       transform: translateY(0);
     }
 
+    .home-btn {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px auto;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .home-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .home-btn:active {
+      transform: translateY(0);
+    }
     .result-card {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white;
@@ -431,6 +460,10 @@
       <button class="calculate-btn" onclick="calculateTotalBTU()">
         <i class="fas fa-calculator"></i>
         Llogarit BTU-të e nevojshme
+      </button>
+
+      <button class="home-btn" onclick="goHome()">
+        <i class="fas fa-home"></i> Kthehu në faqen kryesore
       </button>
 
       <div id="result" class="result-card"></div>
@@ -760,51 +793,58 @@
       `;
 
       // AC recommendations
-        if (totalBTU <= 24000) {
-          // Find the next higher capacity
-          let recommended = options.find(capacity => capacity >= totalBTU);
-          if (!recommended) {
-            recommended = options[options.length - 1]; // Use largest if all are smaller
-          }
-          
-          resultHTML += `
-            <p style="margin-top: 15px; font-size: 1.1rem;">
-              <strong>💡 Rekomandim: Një AC prej ${recommended.toLocaleString()} BTU</strong>
-            </p>
-          `;
-        } else {
-          const combo = [];
-          let remaining = totalBTU;
-          
-          // Start with 24000 BTU units first
-          while (remaining >= 24000) {
-            combo.push(24000);
-            remaining -= 24000;
-          }
-          
-          // Then add 18000 BTU if needed
-          if (remaining >= 12000 && remaining <= 18000) {
-            combo.push(18000);
-            remaining = 0;
-          } else if (remaining > 18000) {
-            combo.push(18000);
-            remaining -= 18000;
-          }
-          
-          // Finally add 12000 BTU if still needed
-          if (remaining > 0) {
-            combo.push(12000);
-          }
-          
-          resultHTML += `
-            <p style="margin-top: 15px; font-size: 1.1rem;">
-              <strong>💡 Rekomandohen njësi të shumta:</strong><br>
-              ${combo.map(btu => `${btu.toLocaleString()} BTU`).join(' + ')}
-            </p>
-          `;
+      if (totalBTU <= 24000) {
+        // Find the next higher capacity with tolerance
+        let recommendedUnit;
+        if (totalBTU <= 12000) {
+          recommendedUnit = 12000;
+        } else if (totalBTU <= 15000) {  // 12000 + 25% tolerance
+          recommendedUnit = 12000;
+        } else if (totalBTU <= 18000) {
+          recommendedUnit = 18000;
+        } else if (totalBTU <= 21000) {  // 18000 + ~17% tolerance  
+          recommendedUnit = 18000;
+        } else if (totalBTU <= 24000) {
+          recommendedUnit = 24000;
         }
+        
+        resultHTML += `
+          <p style="margin-top: 15px; font-size: 1.1rem;">
+            <strong>💡 Rekomandim: Një AC prej ${recommendedUnit.toLocaleString()} BTU</strong>
+          </p>
+        `;
+      } else {
+        const combo = [];
+        let remaining = totalBTU;
+        
+        // Start with 24000 BTU units first
+        while (remaining >= 24000) {
+          combo.push(24000);
+          remaining -= 24000;
+        }
+        
+        // Then add 18000 BTU if needed
+        if (remaining >= 12000 && remaining <= 18000) {
+          combo.push(18000);
+          remaining = 0;
+        } else if (remaining > 18000) {
+          combo.push(18000);
+          remaining -= 18000;
+        }
+        
+        // Finally add 12000 BTU if still needed
+        if (remaining > 0) {
+          combo.push(12000);
+        }
+        
+        resultHTML += `
+          <p style="margin-top: 15px; font-size: 1.1rem;">
+            <strong>💡 Rekomandohen njësi të shumta:</strong><br>
+            ${combo.map(btu => `${btu.toLocaleString()} BTU`).join(' + ')}
+          </p>
+        `;
+      }
 
-      // Energy efficiency estimation
        // Energy efficiency estimation
         const dailyHours = 6;
         const days = 180; // 6 muaj × 30 ditë
