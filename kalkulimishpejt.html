@@ -116,6 +116,27 @@
     .home-btn:active {
       transform: translateY(0);
     }
+    .mini-home-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .mini-home-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.05);
+    }
 
     #result {
       margin-top: 25px;
@@ -153,7 +174,7 @@
   </style>
 </head>
 <body>
-
+  <button class="mini-home-btn" onclick="goHome()"></button>
   <div class="container">
     <h2><i class="fas fa-bolt"></i> Kalkulim i Shpejtë i BTU</h2>
 
