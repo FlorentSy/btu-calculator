@@ -234,12 +234,20 @@
       else if (sun === "pak") baseBTU *= 0.9;
 
       let roundedBTU = Math.round(baseBTU);
-      
-      // Find the next higher capacity
+     
+      // Find the closest capacity (prefer exact match or slightly higher)
       let recommendedUnit;
-      if (roundedBTU <= 12000) recommendedUnit = 12000;
-      else if (roundedBTU <= 18000) recommendedUnit = 18000;
-      else if (roundedBTU <= 24000) recommendedUnit = 24000;
+      if (roundedBTU <= 12000) {
+        recommendedUnit = 12000;
+      } else if (roundedBTU <= 15000) {  // 12000 + 25% tolerance
+        recommendedUnit = 12000;
+      } else if (roundedBTU <= 18000) {
+        recommendedUnit = 18000;
+      } else if (roundedBTU <= 21000) {  // 18000 + ~17% tolerance  
+        recommendedUnit = 18000;
+      } else if (roundedBTU <= 24000) {
+        recommendedUnit = 24000;
+      }
       else {
         // For values over 24000, suggest combination
         let combo = [];
