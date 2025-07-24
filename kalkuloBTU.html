@@ -421,6 +421,26 @@
       background: rgba(255,255,255,0.3);
       transform: scale(1.05);
     }
+    .preset-option {
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      color: white;
+    }
+
+    .preset-option.active {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .preset-option:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -968,18 +988,21 @@
             <i class="fas fa-magic"></i> Lloji i vendbanimit
           </h4>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
-            <button onclick="loadPreset('apartment')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+            <div class="preset-option" onclick="loadPreset('single')" data-preset="single">
+              <i class="fas fa-door-open"></i><br>Dhomë e vetme
+            </div>
+            <div class="preset-option" onclick="loadPreset('apartment')" data-preset="apartment">
               <i class="fas fa-building"></i><br>Apartament
-            </button>
-            <button onclick="loadPreset('house')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+            </div>
+            <div class="preset-option" onclick="loadPreset('house')" data-preset="house">
               <i class="fas fa-home"></i><br>Shtëpi
-            </button>
-            <button onclick="loadPreset('office')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+            </div>
+            <div class="preset-option" onclick="loadPreset('office')" data-preset="office">
               <i class="fas fa-briefcase"></i><br>Zyrë
-            </button>
-            <button onclick="loadPreset('shop')" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+            </div>
+            <div class="preset-option" onclick="loadPreset('shop')" data-preset="shop">
               <i class="fas fa-store"></i><br>Dyqan
-            </button>
+            </div>
           </div>
         </div>
       `;
@@ -988,6 +1011,11 @@
     }
 
     function loadPreset(presetType) {
+      // Update active state
+      document.querySelectorAll('.preset-option').forEach(el => el.classList.remove('active'));
+      document.querySelector(`[data-preset="${presetType}"]`).classList.add('active');
+      
+      // Load preset
       const presets = {
        apartment: {
           roomCount: 1,
@@ -1016,7 +1044,13 @@
           rooms: [
             { roomType: 'hall', length: 12, width: 8, height: 4, windows: 6, insulation: 'average', people: 15, sunExposure: 'high', appliances: 'many' }
           ]
-        }
+        },
+        single: {
+        roomCount: 1,
+        rooms: [
+          { roomType: 'bedroom', length: 4, width: 3, height: 2.8, windows: 1, insulation: 'average', people: 2, sunExposure: 'medium', appliances: 'few' }
+        ]
+      },
       };
       
       const preset = presets[presetType];
