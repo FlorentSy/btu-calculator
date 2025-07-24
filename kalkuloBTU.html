@@ -760,31 +760,49 @@
       `;
 
       // AC recommendations
-      if (totalBTU <= 24000) {
-        const closest = options.reduce((prev, curr) => 
-          Math.abs(curr - totalBTU) < Math.abs(prev - totalBTU) ? curr : prev
-        );
-        resultHTML += `
-          <p style="margin-top: 15px; font-size: 1.1rem;">
-            <strong>💡 Rekomandim: Një AC prej ${closest.toLocaleString()} BTU</strong>
-          </p>
-        `;
-      } else {
-        const combo = [];
-        let remaining = totalBTU;
-        for (let i = options.length - 1; i >= 0; i--) {
-          while (remaining >= options[i]) {
-            combo.push(options[i]);
-            remaining -= options[i];
+        if (totalBTU <= 24000) {
+          // Find the next higher capacity
+          let recommended = options.find(capacity => capacity >= totalBTU);
+          if (!recommended) {
+            recommended = options[options.length - 1]; // Use largest if all are smaller
           }
+          
+          resultHTML += `
+            <p style="margin-top: 15px; font-size: 1.1rem;">
+              <strong>💡 Rekomandim: Një AC prej ${recommended.toLocaleString()} BTU</strong>
+            </p>
+          `;
+        } else {
+          const combo = [];
+          let remaining = totalBTU;
+          
+          // Start with 24000 BTU units first
+          while (remaining >= 24000) {
+            combo.push(24000);
+            remaining -= 24000;
+          }
+          
+          // Then add 18000 BTU if needed
+          if (remaining >= 12000 && remaining <= 18000) {
+            combo.push(18000);
+            remaining = 0;
+          } else if (remaining > 18000) {
+            combo.push(18000);
+            remaining -= 18000;
+          }
+          
+          // Finally add 12000 BTU if still needed
+          if (remaining > 0) {
+            combo.push(12000);
+          }
+          
+          resultHTML += `
+            <p style="margin-top: 15px; font-size: 1.1rem;">
+              <strong>💡 Rekomandohen njësi të shumta:</strong><br>
+              ${combo.map(btu => `${btu.toLocaleString()} BTU`).join(' + ')}
+            </p>
+          `;
         }
-        resultHTML += `
-          <p style="margin-top: 15px; font-size: 1.1rem;">
-            <strong>💡 Rekomandohen njësi të shumta:</strong><br>
-            ${combo.map(btu => `${btu.toLocaleString()} BTU`).join(' + ')}
-          </p>
-        `;
-      }
 
       // Energy efficiency estimation
        // Energy efficiency estimation
