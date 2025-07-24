@@ -88,6 +88,35 @@
       transform: translateY(0);
     }
 
+    .home-btn {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px auto;
+      width: 100%;
+    }
+
+    .home-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .home-btn:active {
+      transform: translateY(0);
+    }
+
     #result {
       margin-top: 25px;
       background: #f3f4f6;
@@ -165,7 +194,7 @@
 
       <button class="calculate-btn" onclick="calculateBTU()">Llogarit BTU të nevojshme</button>
 
-      <button onclick="goHome()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top: 10px;">
+      <button class="home-btn" onclick="goHome()">
         <i class="fas fa-home"></i> Kthehu në faqen kryesore
       </button>
 
