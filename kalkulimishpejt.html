@@ -116,7 +116,7 @@
     .home-btn:active {
       transform: translateY(0);
     }
-    .mini-home-btn {
+   .mini-home-btn {
       position: fixed;
       top: 20px;
       left: 20px;
@@ -136,6 +136,23 @@
     .mini-home-btn:hover {
       background: rgba(255,255,255,0.3);
       transform: scale(1.05);
+    }
+
+    /* Mobile responsive fix */
+    @media (max-width: 768px) {
+      .mini-home-btn {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 10px auto 20px auto;
+        display: block;
+        width: fit-content;
+      }
+      
+      /* Add some top margin to container on mobile */
+      .container {
+        padding-top: 10px;
+      }
     }
 
     #result {

@@ -421,6 +421,23 @@
       background: rgba(255,255,255,0.3);
       transform: scale(1.05);
     }
+
+    /* Mobile responsive fix */
+    @media (max-width: 768px) {
+      .mini-home-btn {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 10px auto 20px auto;
+        display: block;
+        width: fit-content;
+      }
+      
+      /* Add some top margin to container on mobile */
+      .container {
+        padding-top: 10px;
+      }
+    }
     .preset-option {
       background: rgba(255,255,255,0.1);
       padding: 12px;
