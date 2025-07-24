@@ -148,16 +148,26 @@
       <option value="4">4+</option>
     </select>
 
-    <label for="sun">Ekspozimi ndaj diellit</label>
-    <select id="sun">
-      <option value="pak">Pak</option>
-      <option value="mesatar" selected>Mesatar</option>
-      <option value="shume">Shumë</option>
-    </select>
+   <label for="sun">Ekspozimi ndaj diellit</label>
+      <select id="sun">
+        <option value="pak">Pak</option>
+        <option value="mesatar" selected>Mesatar</option>
+        <option value="shume">Shumë</option>
+      </select>
 
-    <button class="calculate-btn" onclick="calculateBTU()">
-      <i class="fas fa-calculator"></i> Llogarit BTU të nevojshme
-    </button>
+      <label for="insulation">Cilësia e izolimit</label>
+      <select id="insulation">
+        <option value="dobet">Dobët</option>
+        <option value="mesatar" selected>Mesatar</option>
+        <option value="mire">E mirë</option>
+        <option value="shkëlqyer">E shkëlqyer</option>
+      </select>
+
+      <button class="calculate-btn" onclick="calculateBTU()">Llogarit BTU të nevojshme</button>
+
+      <button onclick="goHome()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top: 10px;">
+        <i class="fas fa-home"></i> Kthehu në faqen kryesore
+      </button>
 
     <div id="result"></div>
   </div>
@@ -170,6 +180,7 @@
       const windows = parseInt(document.getElementById("windows").value);
       const people = parseInt(document.getElementById("people").value);
       const sun = document.getElementById("sun").value;
+      const insulation = document.getElementById("insulation").value;
 
       if (isNaN(length) || isNaN(width) || isNaN(height) || isNaN(windows)) {
         document.getElementById("result").innerText = "Ju lutem plotësoni të gjitha fushat siç duhet.";
@@ -178,6 +189,12 @@
 
       let volume = length * width * height;
       let baseBTU = volume * 150;
+
+      // Insulation factor
+      if (insulation === "dobet") baseBTU *= 1.4;
+      else if (insulation === "mesatar") baseBTU *= 1.0;
+      else if (insulation === "mire") baseBTU *= 0.8;
+      else if (insulation === "shkëlqyer") baseBTU *= 0.6;
 
       baseBTU += (people - 1) * 500;
 
@@ -188,13 +205,42 @@
       else if (sun === "pak") baseBTU *= 0.9;
 
       let roundedBTU = Math.round(baseBTU);
-      let recommendedUnit = 24000;
+      
+      // Find the next higher capacity
+      let recommendedUnit;
       if (roundedBTU <= 12000) recommendedUnit = 12000;
       else if (roundedBTU <= 18000) recommendedUnit = 18000;
+      else if (roundedBTU <= 24000) recommendedUnit = 24000;
+      else {
+        // For values over 24000, suggest combination
+        let combo = [];
+        let remaining = roundedBTU;
+        while (remaining >= 24000) {
+          combo.push(24000);
+          remaining -= 24000;
+        }
+        if (remaining > 18000) {
+          combo.push(24000);
+        } else if (remaining > 12000) {
+          combo.push(18000);
+        } else if (remaining > 0) {
+          combo.push(12000);
+        }
+        
+        document.getElementById("result").innerHTML =
+          `🔢 BTU të përllogaritura: <strong>${roundedBTU.toLocaleString()} BTU</strong><br><br>
+          ✅ Rekomandohen njësi të shumta: <strong>${combo.map(btu => btu.toLocaleString() + ' BTU').join(' + ')}</strong>`;
+        return;
+      }
 
       document.getElementById("result").innerHTML =
         `🔢 BTU të përllogaritura: <strong>${roundedBTU.toLocaleString()} BTU</strong><br><br>
-         ✅ Njësia e rekomanduar: <strong>${recommendedUnit} BTU</strong>`;
+        ✅ Njësia e rekomanduar: <strong>${recommendedUnit.toLocaleString()} BTU</strong>`;
+    }
+
+    function goHome() {
+      // Replace 'index.html' with your actual home page filename
+      window.location.href = 'index.html';
     }
   </script>
 
